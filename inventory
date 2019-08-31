@@ -1,0 +1,9 @@
+[app]
+isucon.trial.ubuntu004
+isucon.trial.ubuntu001
+
+[db]
+isucon.trial.ubuntu002
+
+[benchmark]
+isucon.trial.ubuntu003
