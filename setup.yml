@@ -109,6 +109,11 @@
         group: root
         mode: 0755
 
+    - name: delete nginx default
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
     - name: daemon reload
       shell: systemctl daemon-reload
 
