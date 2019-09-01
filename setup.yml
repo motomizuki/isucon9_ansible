@@ -48,6 +48,13 @@
 #      shell: pip3.7 install -r /opt/isucon7-qualify/webapp/python/requirements.txt
 #    - name: install ddtrace
 #      shell: pip3.7 install ddtrace
+    - name: create log directory
+      file:
+        path: /var/log/gunicorn
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
     - name: copy gunicorn conf
       copy:
         src: ./files/python/{{item}}
@@ -83,6 +90,27 @@
       copy:
         src: ./files/mysql/mysqld.cnf
         dest: /etc/mysql/my.cnf
+
+    - name: copy gunicorn conf
+      copy:
+        src: ./files/python/{{item}}
+        dest: /etc/systemd/system/
+      with_items:
+        - gunicorn.service
+        - gunicorn.socket
+        - dd-gunicorn.service
+        - dd-gunicorn.socket
+
+    - name: create log directory
+      file:
+        path : /var/log/gunicorn
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: daemon reload
+      shell: systemctl daemon-reload
 
     - name: copy nginx
       copy:
