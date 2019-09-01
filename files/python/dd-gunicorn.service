@@ -10,7 +10,7 @@ Group=root
 RuntimeDirectory=gunicorn
 Environment="ISUBATA_DB_HOST=isucon.trial.ubuntu002" "ISUBATA_DB_USER=isucon" "ISUBATA_DB_PASSWORD=isucon"
 WorkingDirectory=/opt/isucon7-qualify/webapp/python
-ExecStart=/usr/local/bin/ddtrace-run /usr/local/bin/gunicorn --pid /run/gunicorn/dd-pid --bind unix:/run/gunicorn/socket app:app --workers=20  --log-file /var/log/gunicorn/application.log --error-logfile /var/log/gunicorn/error.log
+ExecStart=/usr/local/bin/ddtrace-run /usr/local/bin/gunicorn --pid /run/gunicorn/dd-pid --bind unix:/run/gunicorn/socket app:app --workers=20  --log-file /var/log/gunicorn/application.log --error-logfile /var/log/gunicorn/error.log --log-level debug
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
