@@ -1,0 +1,51 @@
+- name: add software-properties-common
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: add repository
+  apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+
+- name: install required package
+  apt:
+    name:
+      - python3.7
+      - python3.7-dev
+      - libmysqlclient-dev
+    state: latest
+
+- name: install pip
+  shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
+
+- name: install gunicorn
+  pip:
+    executable: pip3.7
+    name:
+      - gunicorn
+      - gevent
+      - ddtrace
+
+- name: copy gunicorn conf
+  copy:
+    src: ./files/{{item}}
+    dest: /etc/systemd/system/
+  with_items:
+    - gunicorn.service
+    - gunicorn.socket
+    - dd-gunicorn.service
+    - dd-gunicorn.socket
+
+- name: enable dd-gunicorn.socket
+  systemd:
+    name: dd-gunicorn.socket
+    daemon_reload: yes
+    # こちらはenabledしない
+
+- name: enable gunicorn.socket
+  systemd:
+    name: gunicorn.socket
+    daemon_reload: yes
+    enabled: yes
+    # 再起動時に立ち上がるのは常にこちら

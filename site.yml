@@ -1,0 +1,16 @@
+- hosts: all
+  roles:
+    - common
+
+- hosts: app
+  roles:
+    - gunicorn
+    - nginx
+
+- hosts: db
+  roles:
+    - mysql
+
+#- hosts: cache
+#  roles:
+#    - redis

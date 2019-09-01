@@ -11,8 +11,7 @@
 
 # app server
 # use private ip to connect
-
+# ip name
 172.24.251.238 isucon.trial.ubuntu004
 172.24.251.241 isucon.trial.ubuntu001
 172.24.251.239 isucon.trial.ubuntu002
-172.24.251.240 isucon.trial.ubuntu003

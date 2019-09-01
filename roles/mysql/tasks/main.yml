@@ -1,0 +1,41 @@
+- name: install mysql
+  apt:
+    name: mysql-server
+    state: latest
+
+- name: copy my.cnf
+  copy:
+    src: ./files/mysqld.cnf
+    dest: /etc/mysql/my.cnf
+
+- name: copy create isucon account sql
+  copy:
+    src: ./files/create_isucon_account.sql
+    dest: /tmp
+  register: cp_isucon
+
+- name: create isucon account
+  when: cp_isucon.changed
+  shell: mysql -uroot < /tmp/create_isucon_account.sql
+
+- name: copy create datadog account sql
+  copy:
+    src: ./files/create_datadog_account.sql
+    dest: /tmp
+  register: cp_datadog
+
+- name: create datadog account
+  when: cp_datadog.changed
+  shell: mysql -uroot < /tmp/create_datadog_account.sql
+
+- name: copy data dog conf
+  copy:
+    src: ./files/datadog-agent/conf.d/mysql.d/conf.yaml
+    dest: /etc/datadog-agent/conf.d/mysql.d/conf.yaml
+
+- name: service start
+  systemd:
+    name: mysql.service
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

@@ -1,0 +1,35 @@
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: delete default conf
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: copy nginx.conf
+  copy:
+    src: ./files/nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: copy application conf
+  copy:
+    src: ./files/app.conf
+    dest: /etc/nginx/conf.d/
+
+- name: create cache directory
+  file:
+    path: /var/cache/nginx
+    state: directory
+    owner: root
+    group: root
+    mode: 0777
+
+- name: start nginx
+  systemd:
+    name: nginx.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

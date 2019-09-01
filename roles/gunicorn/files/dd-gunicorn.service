@@ -1,16 +1,16 @@
 [Unit]
 Description=gunicorn daemon
-Requires=gunicorn.socket
+Requires=dd-gunicorn.socket
 After=network.target
 
 [Service]
-PIDFile=/run/gunicorn/pid
+PIDFile=/run/gunicorn/dd-pid
 User=root
 Group=root
 RuntimeDirectory=gunicorn
 Environment="ISUBATA_DB_HOST=isucon.trial.ubuntu002" "ISUBATA_DB_USER=isucon" "ISUBATA_DB_PASSWORD=isucon"
 WorkingDirectory=/opt/isucon7-qualify/webapp/python
-ExecStart=/usr/local/bin/gunicorn --pid /run/gunicorn/pid --bind unix:/run/gunicorn/socket app:app --workers=10
+ExecStart=/usr/local/bin/ddtrace-run /usr/local/bin/gunicorn -k gevent --pid /run/gunicorn/dd-pid --bind unix:/run/gunicorn/socket app:app --workers=20
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
