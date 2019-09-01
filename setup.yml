@@ -48,6 +48,13 @@
       shell: pip3.7 install -r /opt/isucon7-qualify/webapp/python/requirements.txt
     - name: install ddtrace
       shell: pip3.7 install ddtrace
+    - name: copy gunicorn conf
+      copy:
+        src: ./files/python/{{item}}
+        dest: /etc/systemd/system/
+      with_items:
+        - gunicorn.service
+        - gunicorn.socket
 
 
 

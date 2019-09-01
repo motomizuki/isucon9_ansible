@@ -6,4 +6,4 @@ export ISUBATA_DB_PASSWORD=isucon
 # activate trace
 ddtrace-run gunicorn --workers=10 -b '0.0.0.0:8080' app:app
 # inactivate trace
-# ddtrace-run gunicorn --workers=10 -b '0.0.0.0:8080' app:app
+# gunicorn --workers=10 -b '0.0.0.0:8080' app:app
