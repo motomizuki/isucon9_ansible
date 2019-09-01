@@ -1,53 +1,53 @@
-- hosts: all
-  tasks:
-    - name: Update all packages to the latest version
-      apt:
-        upgrade: dist
-    - name: set hosts
-      copy:
-        src: ./files/system/hosts
-        dest: /etc/hosts
-    - name: install git
-      apt:
-        name: git
-        state: latest
-    - name: git clone xbuild
-      git:
-        repo: https://github.com/tagomoris/xbuild.git
-        dest: /opt/xbuild
-        force: yes
-    - name: git clonse repository
-      git:
-        repo: https://{{ githubuser | urlencode }}:{{ githubpassword }}@github.com/metalunk/isucon7-qualify.git
-        dest: /opt/isucon7-qualify
-        force: yes
+#- hosts: all
+#  tasks:
+#    - name: Update all packages to the latest version
+#      apt:
+#        upgrade: dist
+#    - name: set hosts
+#      copy:
+#        src: ./files/system/hosts
+#        dest: /etc/hosts
+#    - name: install git
+#      apt:
+#        name: git
+#        state: latest
+#    - name: git clone xbuild
+#      git:
+#        repo: https://github.com/tagomoris/xbuild.git
+#        dest: /opt/xbuild
+#        force: yes
+#    - name: git clonse repository
+#      git:
+#        repo: https://{{ githubuser | urlencode }}:{{ githubpassword }}@github.com/metalunk/isucon7-qualify.git
+#        dest: /opt/isucon7-qualify
+#        force: yes
     #- name: install datadog
     #  shell: DD_API_KEY=SECRET bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/datadog-agent/master/cmd/agent/install_script.sh)"
 
 - hosts: app
   tasks:
-    - name: add software-properties-common
-      apt:
-        name: software-properties-common
-        state: latest
-    - name: add repository
-      apt_repository:
-        repo: ppa:deadsnakes/ppa
-        state: present
-    - name: install required package
-      apt:
-        name:
-          - python3.7
-          - python3.7-dev
-          - libmysqlclient-dev
-          - nginx
-        state: latest
-    - name: instal pip
-      shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
-    - name: install requirement
-      shell: pip3.7 install -r /opt/isucon7-qualify/webapp/python/requirements.txt
-    - name: install ddtrace
-      shell: pip3.7 install ddtrace
+#    - name: add software-properties-common
+#      apt:
+#        name: software-properties-common
+#        state: latest
+#    - name: add repository
+#      apt_repository:
+#        repo: ppa:deadsnakes/ppa
+#        state: present
+#    - name: install required package
+#      apt:
+#        name:
+#          - python3.7
+#          - python3.7-dev
+#          - libmysqlclient-dev
+#          - nginx
+#        state: latest
+#    - name: instal pip
+#      shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
+#    - name: install requirement
+#      shell: pip3.7 install -r /opt/isucon7-qualify/webapp/python/requirements.txt
+#    - name: install ddtrace
+#      shell: pip3.7 install ddtrace
     - name: copy gunicorn conf
       copy:
         src: ./files/python/{{item}}
@@ -55,7 +55,19 @@
       with_items:
         - gunicorn.service
         - gunicorn.socket
+        - dd-gunicorn.service
+        - dd-gunicorn.socket
 
+    - name: daemon reload
+      shell: systemctl daemon-reload
+
+    - name: copy nginx
+      copy:
+        src: ./files/nginx/app.conf
+        dest: /etc/nginx/conf.d/
+
+    - name: nginx restart
+      shell: systemctl restart nginx.service
 
 
 - hosts: db
@@ -66,11 +78,19 @@
           - mysql-server
           - nginx
         state: latest
+
     - name: copy my.cnf
       copy:
         src: ./files/mysql/mysqld.cnf
         dest: /etc/mysql/my.cnf
-    -
+
+    - name: copy nginx
+      copy:
+        src: ./files/nginx/router.conf
+        dest: /etc/nginx/conf.d/
+
+    - name: nginx restart
+      shell: systemctl restart nginx.service
 
 #- hosts: benchmark
 #  tasks:
