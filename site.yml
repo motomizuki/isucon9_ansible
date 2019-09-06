@@ -1,12 +1,12 @@
-#- hosts: all
-#  roles:
-#    - common
-#
-#- hosts: app
-#  roles:
-#    - gunicorn
-#    - nginx
-#
+- hosts: all
+  roles:
+    - common
+
+- hosts: app
+  roles:
+    - gunicorn
+    - nginx
+
 - hosts: db
   roles:
     - mysql
