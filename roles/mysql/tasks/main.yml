@@ -1,7 +1,7 @@
 - name: install mysql
   apt:
     name: mysql-server
-    state: latest
+    state: present
 
 - name: copy my.cnf
   copy:
@@ -32,6 +32,21 @@
   copy:
     src: ./files/datadog-agent/conf.d/mysql.d/conf.yaml
     dest: /etc/datadog-agent/conf.d/mysql.d/conf.yaml
+- name: add pt-tools
+  apt:
+    deb: https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+
+- name: install pt tool kit
+  apt:
+    name:
+      - libdbd-mysql-perl
+      - libdbi-perl
+      - libio-socket-ssl-perl
+      - libnet-ssleay-perl
+      - libterm-readkey-perl
+      - percona-toolkit
+    update_cache: yes
+    state: present
 
 - name: service start
   systemd:
