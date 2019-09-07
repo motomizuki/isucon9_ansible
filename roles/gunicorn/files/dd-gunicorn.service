@@ -8,8 +8,8 @@ PIDFile=/run/gunicorn/dd-pid
 User=root
 Group=root
 RuntimeDirectory=gunicorn
-Environment="ISUBATA_DB_HOST=isucon.trial.ubuntu002" "ISUBATA_DB_USER=isucon" "ISUBATA_DB_PASSWORD=isucon"
-WorkingDirectory=/opt/isucon7-qualify/webapp/python
+Environment="MYSQL_HOST=isucon003"
+WorkingDirectory=/home/isucon/isucari/webapp/python
 ExecStart=/usr/local/bin/ddtrace-run /usr/local/bin/gunicorn -k gevent --pid /run/gunicorn/dd-pid --bind unix:/run/gunicorn/socket app:app --workers=5
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
@@ -17,4 +17,3 @@ PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
-

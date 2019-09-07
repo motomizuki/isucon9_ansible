@@ -1,10 +1,8 @@
 [app]
-isucon.trial.ubuntu004
-isucon.trial.ubuntu001
-isucon.trial.ubuntu002
+isucon001
 
 [db]
-isucon.trial.ubuntu002
+isucon003
 
 [cache]
-isucon.trial.ubuntu002
+isucon001

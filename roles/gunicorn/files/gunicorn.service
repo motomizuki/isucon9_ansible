@@ -9,7 +9,7 @@ User=root
 Group=root
 RuntimeDirectory=gunicorn
 Environment="ISUBATA_DB_HOST=isucon.trial.ubuntu002" "ISUBATA_DB_USER=isucon" "ISUBATA_DB_PASSWORD=isucon"
-WorkingDirectory=/opt/isucon7-qualify/webapp/python
+WorkingDirectory=/home/isucon/isucari/webapp/python
 ExecStart=/usr/local/bin/gunicorn -k gevent --pid /run/gunicorn/pid --bind unix:/run/gunicorn/socket app:app --workers=5
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID

@@ -16,8 +16,14 @@
       - libmysqlclient-dev
     state: latest
 
-- name: install pip
-  shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
+#- name: install pip
+#  shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
+
+- name: update pip
+  pip:
+    executable: pip3.7
+    name: pip
+    state: latest
 
 - name: install gunicorn
   pip:
@@ -26,7 +32,10 @@
       - gunicorn
       - gevent
       - ddtrace
-
+- name: install related lib
+  pip:
+    executable: pip3.7
+    requirements: /home/isucon/isucari/webapp/python/requirements.txt
 - name: copy gunicorn conf
   copy:
     src: ./files/{{item}}
