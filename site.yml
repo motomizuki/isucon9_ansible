@@ -1,15 +1,17 @@
 #- hosts: all
 #  roles:
 #    - common
+#    - deploy
 
-- hosts: app
-  roles:
-#    - gunicorn
-    - nginx
-
-#- hosts: db
+#- hosts: app
 #  roles:
-#    - mysql
+##    - gunicorn
+#    - nginx
+
+- hosts: db
+  roles:
+    #- mysql
+    - deploy
 
 #- hosts: cache
 #  roles:

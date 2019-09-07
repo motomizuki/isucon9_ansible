@@ -16,8 +16,8 @@
       - libmysqlclient-dev
     state: latest
 
-#- name: install pip
-#  shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
+- name: install pip
+  shell: cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
 
 - name: update pip
   pip:

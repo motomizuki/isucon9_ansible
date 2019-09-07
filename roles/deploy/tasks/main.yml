@@ -1,0 +1,8 @@
+- name: git checkout latest
+  git:
+    repo: https://{{ githubuser | urlencode }}:{{ githubpassword }}@github.com/metalunk/isucon9.git
+    dest: /tmp/isucon9
+    force: yes
+
+- name: copy
+  shell: cp -r /tmp/isucon9/isucari /home/isucon
