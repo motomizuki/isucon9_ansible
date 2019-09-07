@@ -1,0 +1,17 @@
+- name: install redis
+  apt:
+    name: redis-server
+    state: present
+    update_cache: yes
+
+- name: copy conf
+  copy:
+    src: ./files/redis.conf
+    dest: /etc/redis/redis.conf
+
+- name: start redis
+  systemd:
+    name: redis-server.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

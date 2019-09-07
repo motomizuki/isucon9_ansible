@@ -75,7 +75,7 @@ log_error = /var/log/mysql/error.log
 # Here you can see queries with especially long duration
 slow_query_log = 1
 slow_query_log_file = /var/log/mysql/mysql-slow.log
-long_query_time = 2
+long_query_time = 0
 #log-queries-not-using-indexes
 #
 # The following can be used as easy to replay backup logs or for replication.
@@ -90,8 +90,10 @@ max_binlog_size   = 100M
 #
 # * InnoDB
 #
+innodb_flush_method=O_DIRECT
 innodb_buffer_pool_size=1G
 innodb_file_per_table=ON
+innodb_flush_log_at_trx_commit=2
 # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
 # Read the manual for more InnoDB related options. There are many!
 #
